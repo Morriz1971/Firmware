@@ -1845,8 +1845,32 @@ void Commands::processMCode(GCode *com)
         }
         else
         {
+          if(com->hasP()){
+            switch(com->P){
+              case 0:
+                Printer::disableXStepper();
+                break;
+
+              case 1:
+                Printer::disableYStepper();
+                break;
+
+              case 2:
+                Printer::disableZStepper();
+                break;
+
+              case 3:
+                Extruder::disableCurrentExtruderMotor();
+                break;
+
+              case 4:
+                Extruder::disableAllExtruderMotors();
+                break;
+            }
+          }else{
             Commands::waitUntilEndOfAllMoves();
             Printer::kill(true);
+          }
         }
         break;
     case 85: // M85
@@ -1907,10 +1931,19 @@ void Commands::processMCode(GCode *com)
 #endif
         if (com->hasS())
         {
+#if CLONE == 1
+            if(com->hasT())
+                break;
+            else
+              for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+                Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+              }
+#else
             if(com->hasT())
                 Extruder::setTemperatureForExtruder(com->S,com->T,com->hasF() && com->F>0);
             else
                 Extruder::setTemperatureForExtruder(com->S,Extruder::current->id,com->hasF() && com->F>0);
+#endif
         }
 #endif
         break;
@@ -1932,8 +1965,17 @@ void Commands::processMCode(GCode *com)
         UI_STATUS_UPD(UI_TEXT_HEATING_EXTRUDER);
         Commands::waitUntilEndOfAllMoves();
         Extruder *actExtruder = Extruder::current;
+#if CLONE == 1
+        if(com->hasT() && com->T<NUM_EXTRUDER) break;
+        if (com->hasS()){
+          for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+            Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+          }
+        }
+#else
         if(com->hasT() && com->T<NUM_EXTRUDER) actExtruder = &extruder[com->T];
         if (com->hasS()) Extruder::setTemperatureForExtruder(com->S,actExtruder->id,com->hasF() && com->F>0);
+#endif
 #if defined(SKIP_M109_IF_WITHIN) && SKIP_M109_IF_WITHIN > 0
         if(abs(actExtruder->tempControl.currentTemperatureC - actExtruder->tempControl.targetTemperatureC)<(SKIP_M109_IF_WITHIN)) break; // Already in range
 #endif
@@ -2585,9 +2627,11 @@ void Commands::emergencyStop()
 #if EXT0_HEATER_PIN>-1
     WRITE(EXT0_HEATER_PIN,HEATER_PINS_INVERTED);
 #endif
+/*
 #if defined(EXT1_HEATER_PIN) && EXT1_HEATER_PIN>-1 && NUM_EXTRUDER>1
     WRITE(EXT1_HEATER_PIN,HEATER_PINS_INVERTED);
 #endif
+*/
 #if defined(EXT2_HEATER_PIN) && EXT2_HEATER_PIN>-1 && NUM_EXTRUDER>2
     WRITE(EXT2_HEATER_PIN,HEATER_PINS_INVERTED);
 #endif
