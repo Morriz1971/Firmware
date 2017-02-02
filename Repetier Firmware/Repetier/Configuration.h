@@ -16,13 +16,13 @@ Hacker H2        = 6
 
 // ### Number of active extruders
 // 1 is standard, 2 is with the Y coupler for dual filament input
-#define NUM_EXTRUDER 1
+#define NUM_EXTRUDER 2
 
 // ### CLONE settings ###
 // 0 is none, for just a standard single extruder/nozzle setup
 // 1 is dual input filament setups - this is for the pins.h file to configure the second input reading
 // 2 NOT USED YET, but will be for dual independent hotends/nozzles/extruders
-#define CLONE 0
+#define CLONE 1
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
