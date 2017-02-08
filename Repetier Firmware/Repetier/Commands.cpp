@@ -1934,8 +1934,14 @@ void Commands::processMCode(GCode *com)
         if (com->hasS())
         {
 #if CLONE == 1
-            if(com->hasT())
-                break;
+            if(com->hasT()){
+              if(com->T == Extruder::current->id){
+                for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+                  Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+                }
+              }
+              break;
+            }
             else
               for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
                 Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
