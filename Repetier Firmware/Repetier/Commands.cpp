@@ -1974,12 +1974,18 @@ void Commands::processMCode(GCode *com)
         Commands::waitUntilEndOfAllMoves();
         Extruder *actExtruder = Extruder::current;
 #if CLONE == 1
-        if(com->hasT() && com->T<NUM_EXTRUDER) break;
-        if (com->hasS()){
+        if(com->hasT()){
+          if(com->T == Extruder::current->id){
+            for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
+              Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
+            }
+          }
+          break;
+        }
+        else
           for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
             Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
           }
-        }
 #else
         if(com->hasT() && com->T<NUM_EXTRUDER) actExtruder = &extruder[com->T];
         if (com->hasS()) Extruder::setTemperatureForExtruder(com->S,actExtruder->id,com->hasF() && com->F>0);
