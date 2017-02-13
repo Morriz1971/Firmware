@@ -1940,7 +1940,7 @@ void Commands::processMCode(GCode *com)
                   Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
                 }
               }
-              break;
+              else break;
             }
             else
               for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
@@ -1980,7 +1980,7 @@ void Commands::processMCode(GCode *com)
               Extruder::setTemperatureForExtruder(com->S,i,com->hasF() && com->F>0);
             }
           }
-          break;
+          else break;
         }
         else
           for(uint8_t i = 0; i < NUM_EXTRUDER; i++){
