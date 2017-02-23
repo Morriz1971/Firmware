@@ -76,11 +76,7 @@ Hacker H2        = 6
 //#define PULLEY_CIRCUMFERENCE (PULLEY_DIAMETER * 3.1415927)
 #define STEPS_PER_ROTATION 200
 #define MICRO_STEPS 16
-#if PRINTER == 4
-#define AXIS_STEPS_PER_MM 1600  // DropLit v2 step settings
-#else
 #define AXIS_STEPS_PER_MM ((float)(MICRO_STEPS * STEPS_PER_ROTATION) / PULLEY_CIRCUMFERENCE)  // for deltas with 1.8 deg. steppers and 20 tooth GT2 pulleys
-#endif
 #define XAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
 #define YAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
 #define ZAXIS_STEPS_PER_MM AXIS_STEPS_PER_MM
