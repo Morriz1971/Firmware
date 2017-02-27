@@ -960,7 +960,7 @@ void Commands::processGCode(GCode *com)
         }
         if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
           xProbe = -1; yProbe = -1; zProbe = -1;
-          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH. Aborting"), probeSensitivity);
+          Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH. Aborting. Sensitivity: "), probeSensitivity);
           Com::printFLN(PSTR("X: "), offsetX);
           Com::printFLN(PSTR("Y: "), offsetY);
           Com::printFLN(PSTR("Z: "), offsetZ);
@@ -975,6 +975,7 @@ void Commands::processGCode(GCode *com)
         }
       }while(failedProbe);
 
+      if(failedProbe) break;
       Printer::updateCurrentPosition(true);
       Printer::feedrate = oldFeedrate;
       printCurrentPosition(PSTR("G69 "));
