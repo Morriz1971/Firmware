@@ -961,6 +961,7 @@ void Commands::processGCode(GCode *com)
         if(offsetX > 400 || offsetY > 400 || offsetZ > 400){
           xProbe = -1; yProbe = -1; zProbe = -1;
           Com::printFLN(PSTR("OFFSETS OFF BY TOO MUCH. Aborting. Sensitivity: "), probeSensitivity);
+          GCode::executeFString(PSTR("M117 Endstop Offset Error"));
           Com::printFLN(PSTR("X: "), offsetX);
           Com::printFLN(PSTR("Y: "), offsetY);
           Com::printFLN(PSTR("Z: "), offsetZ);
