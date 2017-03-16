@@ -43,7 +43,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170213" // in date format yyyymmdd
+#define FIRMWARE_DATE "20170316" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
@@ -61,9 +61,7 @@ Hacker H2        = 6
 #define MOTOR_CURRENT_PWM_RANGE 2000
 #endif
 
-
-// ################ END MANUAL SETTINGS ##########################
-
+#define Z_LIFT_ON_PAUSE 20         // Amount to lift the head (mm) when pausing from the LCD screen
 #define MIN_DEFECT_TEMPERATURE 17  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
 #define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
 
